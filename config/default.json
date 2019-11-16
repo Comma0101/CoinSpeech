@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://loop_1:loop_1@speechfree-gg2je.mongodb.net/test?retryWrites=true",
+  "jwtSecret":"mysecrettoken"
+}
