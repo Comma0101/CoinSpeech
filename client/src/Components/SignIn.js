@@ -1,72 +1,74 @@
-import React, { useState,useEffect } from 'react';
-import PropTypes from 'prop-types';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import withStyles from '@material-ui/core/styles/withStyles';
-import {connect} from 'react-redux';
-import{login } from '../actions/auth'
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import withStyles from "@material-ui/core/styles/withStyles";
+import { connect } from "react-redux";
+import { login } from "../actions/auth";
+import Grid from "@material-ui/core/Grid";
+import Link from "@material-ui/core/Link";
+import Alert from "./Alert";
+
 const styles = theme => ({
   main: {
-    width: 'auto',
-    display: 'block', // Fix IE 11 issue.
-    marginLeft: theme.spacing(3) ,
-    marginRight: theme.spacing(3) ,
-    [theme.breakpoints.up(400 + theme.spacing(3*2) )]: {
+    width: "auto",
+    display: "block", // Fix IE 11 issue.
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(3),
+    [theme.breakpoints.up(400 + theme.spacing(3 * 2))]: {
       width: 400,
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
+      marginLeft: "auto",
+      marginRight: "auto"
+    }
   },
   paper: {
-    marginTop: theme.spacing(8) ,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: `${theme.spacing(2) }px ${theme.spacing(3) }px ${theme.spacing(3) }px`,
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme.spacing(3)}px`
   },
   avatar: {
     margin: theme.spacing(),
-    backgroundColor: 'black',
+    backgroundColor: "black"
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(),
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing()
   },
   submit: {
-    marginTop: theme.spacing(3) ,
-  },
+    marginTop: theme.spacing(3)
+  }
 });
 
-const SignIn=(props) => {
-  const { classes,isAuthenticated,login,modalControl } = props;
-  const [formData,setFormData] = useState({
-      email:'',
-      password:'',
-      password1:''
-  })
-const {email,password,password1} = formData;
-const onChange = e=> setFormData({...formData,[e.target.name]:e.target.value});
-const onSubmit = async e =>{
+const SignIn = props => {
+  const { classes, isAuthenticated, login, modalControl } = props;
+  const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  });
+  const { email, password } = formData;
+  const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const onSubmit = async e => {
     e.preventDefault();
-    login(email,password);
-}
-if (isAuthenticated){
-
-   modalControl();
-  
- 
-}
+    login(email, password);
+  };
+  if (isAuthenticated) {
+    modalControl();
+  }
+  //  else if (password != password1) {
+  //   setAlert("password do not match", "danger");
+  // }
 
   return (
     <main className={classes.main}>
@@ -78,16 +80,29 @@ if (isAuthenticated){
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} onSubmit={e=>onSubmit(e)} >
-          <FormControl margin="normal" required fullWidth>
+        <Alert />
+        <form className={classes.form} onSubmit={e => onSubmit(e)}>
+          <FormControl margin="normal" fullWidth>
             <InputLabel htmlFor="email">Email Address</InputLabel>
-            <Input id="email" name="email" autoComplete="email"
-             value={email} onChange={e=>onChange(e)}  autoFocus />
+            <Input
+              id="email"
+              name="email"
+              autoComplete="email"
+              value={email}
+              onChange={e => onChange(e)}
+              autoFocus
+            />
           </FormControl>
-          <FormControl margin="normal" required fullWidth>
+          <FormControl margin="normal" fullWidth>
             <InputLabel htmlFor="password">Password</InputLabel>
-            <Input name="password" type="password" id="password" 
-            value={password} onChange={e=>onChange(e)} autoComplete="current-password" />
+            <Input
+              name="password"
+              type="password"
+              id="password"
+              value={password}
+              onChange={e => onChange(e)}
+              autoComplete="current-password"
+            />
           </FormControl>
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -115,20 +130,19 @@ if (isAuthenticated){
             </Grid>
           </Grid>
         </form>
-      
       </Paper>
     </main>
   );
-}
+};
 
 SignIn.propTypes = {
   classes: PropTypes.object.isRequired,
-  login:PropTypes.func.isRequired,
-  isAuthenticated:PropTypes.bool,
-  modalControl:PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+  modalControl: PropTypes.func.isRequired
 };
-const mapStateToProps= state =>({
+const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated
-})
+});
 
-export default connect(mapStateToProps,{login})(withStyles(styles)(SignIn));
+export default connect(mapStateToProps, { login })(withStyles(styles)(SignIn));

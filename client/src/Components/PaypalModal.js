@@ -4,10 +4,10 @@ import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
-import SignIn from "./SignIn";
+import PaypalButton from "./PaypalButton";
 
 function getModalStyle() {
-  const top = 25;
+  const top = 10;
   const left = 25;
 
   return {
@@ -23,7 +23,7 @@ const styles = theme => ({
   }
 });
 
-class SigninModal extends React.Component {
+class PaypalButtonModal extends React.Component {
   state = {
     open: false
   };
@@ -37,7 +37,7 @@ class SigninModal extends React.Component {
   };
 
   render() {
-    const { classes, SigninModalRef } = this.props;
+    const { coins, classes } = this.props;
 
     return (
       <div>
@@ -46,7 +46,7 @@ class SigninModal extends React.Component {
           variant="contained"
           onClick={this.handleOpen}
         >
-          Sign In
+          Buy
         </Button>
         <Modal
           aria-labelledby="simple-modal-title"
@@ -54,17 +54,17 @@ class SigninModal extends React.Component {
           open={this.state.open}
           onClose={this.handleClose}
         >
-          <SignIn modalControl={this.handleClose} />
+          <PaypalButton modalControl={this.handleClose} coins={coins} />
         </Modal>
       </div>
     );
   }
 }
 
-SigninModal.propTypes = {
+PaypalButtonModal.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
 // We need an intermediary variable for handling the recursive nesting.
 
-export default withStyles(styles)(SigninModal);
+export default withStyles(styles)(PaypalButtonModal);
