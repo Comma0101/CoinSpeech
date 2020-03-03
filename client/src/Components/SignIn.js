@@ -50,7 +50,8 @@ const styles = theme => ({
   }
 });
 
-const SignIn = props => {
+// const SignIn = props => {
+const SignIn = React.forwardRef((props, ref) => {
   const { classes, isAuthenticated, login, modalControl } = props;
   const [formData, setFormData] = useState({
     email: "",
@@ -66,12 +67,13 @@ const SignIn = props => {
   if (isAuthenticated) {
     modalControl();
   }
+
   //  else if (password != password1) {
   //   setAlert("password do not match", "danger");
   // }
 
   return (
-    <main className={classes.main}>
+    <main ref={ref} className={classes.main}>
       <CssBaseline />
       <Paper className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -133,7 +135,7 @@ const SignIn = props => {
       </Paper>
     </main>
   );
-};
+});
 
 SignIn.propTypes = {
   classes: PropTypes.object.isRequired,

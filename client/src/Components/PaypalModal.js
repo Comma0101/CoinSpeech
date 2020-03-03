@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -7,8 +7,8 @@ import Button from "@material-ui/core/Button";
 import PaypalButton from "./PaypalButton";
 
 function getModalStyle() {
-  const top = 10;
-  const left = 25;
+  const top = 50;
+  const left = 50;
 
   return {
     top: `${top}%`,
@@ -18,48 +18,54 @@ function getModalStyle() {
 }
 
 const styles = theme => ({
-  button: {
-    margin: theme.spacing(1)
+  paper: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3)
   }
 });
 
-class PaypalButtonModal extends React.Component {
-  state = {
-    open: false
+const PaypalButtonModal = props => {
+  const [open, setOpen] = useState(false);
+  const [modalStyle] = useState(getModalStyle);
+  const handleOpen = () => {
+    setOpen(true);
   };
 
-  handleOpen = () => {
-    this.setState({ open: true });
+  const handleClose = () => {
+    setOpen(false);
   };
 
-  handleClose = () => {
-    this.setState({ open: false });
-  };
+  const { coins, classes } = props;
 
-  render() {
-    const { coins, classes } = this.props;
+  return (
+    <div>
+      <Button
+        className={classes.button}
+        variant="contained"
+        onClick={handleOpen}
+        fullWidth
+      >
+        Buy
+      </Button>
+      <Modal
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        open={open}
+        onClose={handleClose}
+      >
+        <div style={modalStyle} className={classes.paper}>
+          <h2 id="simple-modal-title">The Total is {coins} $</h2>
 
-    return (
-      <div>
-        <Button
-          className={classes.button}
-          variant="contained"
-          onClick={this.handleOpen}
-        >
-          Buy
-        </Button>
-        <Modal
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-          open={this.state.open}
-          onClose={this.handleClose}
-        >
-          <PaypalButton modalControl={this.handleClose} coins={coins} />
-        </Modal>
-      </div>
-    );
-  }
-}
+          <PaypalButton modalControl={handleClose} coins={coins} />
+        </div>
+      </Modal>
+    </div>
+  );
+};
 
 PaypalButtonModal.propTypes = {
   classes: PropTypes.object.isRequired

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -23,43 +23,39 @@ const styles = theme => ({
   }
 });
 
-class SigninModal extends React.Component {
-  state = {
-    open: false
+const SigninModal = props => {
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
   };
 
-  handleOpen = () => {
-    this.setState({ open: true });
+  const handleClose = () => {
+    setOpen(false);
   };
 
-  handleClose = () => {
-    this.setState({ open: false });
-  };
+  const { classes, SigninModalRef } = props;
 
-  render() {
-    const { classes, SigninModalRef } = this.props;
-
-    return (
-      <div>
-        <Button
-          className={classes.button}
-          variant="contained"
-          onClick={this.handleOpen}
-        >
-          Sign In
-        </Button>
-        <Modal
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-          open={this.state.open}
-          onClose={this.handleClose}
-        >
-          <SignIn modalControl={this.handleClose} />
-        </Modal>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <Button
+        className={classes.button}
+        variant="contained"
+        onClick={handleOpen}
+      >
+        Sign In
+      </Button>
+      <Modal
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        open={open}
+        onClose={handleClose}
+      >
+        <SignIn modalControl={handleClose} />
+      </Modal>
+    </div>
+  );
+};
 
 SigninModal.propTypes = {
   classes: PropTypes.object.isRequired
