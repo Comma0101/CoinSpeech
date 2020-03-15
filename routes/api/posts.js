@@ -21,7 +21,7 @@ router.post(
   ],
   async (req, res) => {
     const errors = validationResult(req);
-    console.log(errors.isEmpty());
+    //console.log(errors.isEmpty());
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
@@ -49,6 +49,9 @@ router.post(
 // @desc     Get all posts
 // @access   Private
 router.get("/", async (req, res) => {
+  // const load = parseInt(req.query[0]);
+  // console.log(load);
+  // returns 'number'
   try {
     const posts = await Post.find().sort({ date: -1 });
     res.json(posts);

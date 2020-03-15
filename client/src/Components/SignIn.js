@@ -17,6 +17,7 @@ import { login } from "../actions/auth";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import Alert from "./Alert";
+import { Link as RouterLink } from "react-router-dom";
 
 const styles = theme => ({
   main: {
@@ -121,7 +122,12 @@ const SignIn = React.forwardRef((props, ref) => {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Link
+                variant="body2"
+                component={RouterLink}
+                to="/PasswordReset"
+                underline="none"
+              >
                 Forgot password?
               </Link>
             </Grid>

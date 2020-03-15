@@ -9,6 +9,13 @@ import Send from "@material-ui/icons/Send";
 import { addPost } from "../actions/post";
 import { connect } from "react-redux";
 import Alert from "./Alert";
+
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 const styles = theme => ({
   root: {
     padding: "2px 4px",
@@ -38,37 +45,88 @@ const styles = theme => ({
 const TextInput = props => {
   const { classes, addPost } = props;
   const [text, setText] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handlesubmit = e => {
+    e.preventDefault();
+    addPost({ text });
+    setText("");
+  };
+  const handlechange = e => {
+    setText(e.target.value);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <div>
       <Alert />
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          addPost({ text });
-          setText("");
-        }}
-      >
-        <Paper className={classes.root}>
-          <InputBase
-            className={classes.input}
-            onChange={e => setText(e.target.value)}
-            value={text}
-            placeholder="Post Here"
-            multiline
-          />
+      {/* <form onSubmit={handlesubmit}> */}
+      <Paper className={classes.root}>
+        <InputBase
+          className={classes.input}
+          onChange={handlechange}
+          value={text}
+          placeholder="Post Here"
+          multiline
+        />
 
-          <Divider className={classes.divider} />
-          <IconButton
-            type="submit"
-            color="default"
-            className={classes.iconButton}
-            aria-label="Directions"
+        <Divider className={classes.divider} />
+
+        <IconButton
+          //type="submit"
+          color="default"
+          className={classes.iconButton}
+          aria-label="Directions"
+          onClick={handleOpen}
+        >
+          <Send />
+        </IconButton>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <form onSubmit={handlesubmit}>
+            <DialogTitle id="alert-dialog-title">
+              {"Please Confirm the Message You Want to Post"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                {text}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button type="reset" onClick={handleClose} color="primary">
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                onClick={handleClose}
+                color="primary"
+                autoFocus
+              >
+                Confirm
+              </Button>
+            </DialogActions>
+          </form>
+        </Dialog>
+        {/* <Modal
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+            open={open}
+            onClose={handleClose}
           >
-            <Send />
-          </IconButton>
-        </Paper>
-      </form>
+            <Confirm modalControl={handleClose} texts={text} />
+          </Modal> */}
+      </Paper>
+      {/* </form> */}
     </div>
   );
 };
